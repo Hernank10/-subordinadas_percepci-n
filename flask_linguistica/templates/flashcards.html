@@ -14,7 +14,12 @@
         <div class="col-md-8 mx-auto">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Tu progreso</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Tu progreso</h5>
+                        <a href="{{ url_for('dashboard') }}" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-speedometer2 me-1"></i>Ver Dashboard
+                        </a>
+                    </div>
                     <div class="progress mb-2" style="height: 20px;">
                         <div class="progress-bar bg-success" role="progressbar" 
                              style="width: 0%" id="progress-bar"></div>
@@ -27,28 +32,36 @@
         </div>
     </div>
     
-    <!-- Filtros -->
+    <!-- Filtros y modo de estudio -->
     <div class="row mb-4">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title mb-3">
-                        <i class="bi bi-funnel me-2"></i>Filtros
+                        <i class="bi bi-funnel me-2"></i>Filtros y Modo de Estudio
                     </h5>
                     <div class="row">
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
+                            <label for="modo" class="form-label">Modo</label>
+                            <select class="form-select" id="modo">
+                                <option value="normal">Normal (todas)</option>
+                                <option value="solo_pendientes">Solo pendientes</option>
+                                <option value="revision">Revisión (mixto)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-2">
                             <label for="categoria" class="form-label">Categoría</label>
                             <select class="form-select" id="categoria">
                                 <option value="todas">Todas las categorías</option>
                             </select>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label for="dificultad" class="form-label">Dificultad</label>
                             <select class="form-select" id="dificultad">
                                 <option value="todas">Todas las dificultades</option>
                             </select>
                         </div>
-                        <div class="col-md-4 mb-2">
+                        <div class="col-md-3 mb-2">
                             <label for="tipo" class="form-label">Tipo</label>
                             <select class="form-select" id="tipo">
                                 <option value="todos">Todos los tipos</option>
@@ -73,7 +86,7 @@
     <!-- Área de la flashcard -->
     <div class="row mb-4">
         <div class="col-md-8 mx-auto">
-            <div class="card flashcard" id="flashcard" style="cursor: pointer; min-height: 300px;">
+            <div class="card flashcard" style="min-height: 350px;">
                 <div class="card-body text-center d-flex flex-column justify-content-center">
                     <div id="flashcard-front">
                         <h4 class="mb-3" id="pregunta">Haz clic en "Flashcard Aleatoria" para comenzar</h4>
@@ -85,7 +98,7 @@
                         <div class="alert alert-info mt-3" id="ejemplo"></div>
                     </div>
                 </div>
-                <div class="card-footer text-muted">
+                <div class="card-footer">
                     <div class="row">
                         <div class="col-4 text-start">
                             <span class="badge bg-primary" id="categoria-badge"></span>
@@ -102,10 +115,10 @@
         </div>
     </div>
     
-    <!-- Botones de navegación -->
-    <div class="row">
+    <!-- Botones de control -->
+    <div class="row mb-4">
         <div class="col-md-8 mx-auto">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between mb-3">
                 <button class="btn btn-outline-primary" onclick="cargarFlashcardAleatoria()">
                     <i class="bi bi-arrow-left me-2"></i>Anterior
                 </button>
@@ -116,11 +129,25 @@
                     Siguiente <i class="bi bi-arrow-right ms-2"></i>
                 </button>
             </div>
+            
+            <!-- Botones de respuesta -->
+            <div class="row" id="botones-respuesta" style="display: none;">
+                <div class="col-6">
+                    <button class="btn btn-success w-100" onclick="responder(true)">
+                        <i class="bi bi-check-circle me-2"></i>Sabía la respuesta
+                    </button>
+                </div>
+                <div class="col-6">
+                    <button class="btn btn-danger w-100" onclick="responder(false)">
+                        <i class="bi bi-x-circle me-2"></i>No sabía
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
     
     <!-- Buscador -->
-    <div class="row mt-5">
+    <div class="row mt-4">
         <div class="col-md-8 mx-auto">
             <div class="card">
                 <div class="card-body">
@@ -135,7 +162,6 @@
                         </button>
                     </div>
                     <div id="resultados-busqueda" class="list-group" style="display: none;">
-                        <!-- Resultados aparecerán aquí -->
                     </div>
                 </div>
             </div>
@@ -145,7 +171,8 @@
 
 <script>
 let flashcardActual = null;
-let caraActual = 'front'; // 'front' o 'back'
+let caraActual = 'front';
+let tiempoInicio = null;
 
 // Cargar filtros al iniciar
 document.addEventListener('DOMContentLoaded', function() {
@@ -195,11 +222,13 @@ function cargarFiltros() {
 }
 
 function cargarFlashcardAleatoria() {
+    const modo = document.getElementById('modo').value;
     const categoria = document.getElementById('categoria').value;
     const dificultad = document.getElementById('dificultad').value;
     const tipo = document.getElementById('tipo').value;
     
     let url = '/api/flashcards/random?';
+    if (modo) url += `modo=${modo}&`;
     if (categoria && categoria !== 'todas') url += `categoria=${categoria}&`;
     if (dificultad && dificultad !== 'todas') url += `dificultad=${dificultad}&`;
     if (tipo && tipo !== 'todos') url += `tipo=${tipo}`;
@@ -214,7 +243,8 @@ function cargarFlashcardAleatoria() {
             flashcardActual = data;
             mostrarFlashcard(data);
             caraActual = 'front';
-            cargarEstadisticas();
+            document.getElementById('botones-respuesta').style.display = 'none';
+            tiempoInicio = new Date();
         });
 }
 
@@ -259,28 +289,75 @@ function voltearFlashcard() {
     if (caraActual === 'front') {
         document.getElementById('flashcard-front').style.display = 'none';
         document.getElementById('flashcard-back').style.display = 'block';
+        document.getElementById('botones-respuesta').style.display = 'flex';
         caraActual = 'back';
     } else {
         document.getElementById('flashcard-front').style.display = 'block';
         document.getElementById('flashcard-back').style.display = 'none';
+        document.getElementById('botones-respuesta').style.display = 'none';
         caraActual = 'front';
     }
+}
+
+function responder(correcta) {
+    if (!flashcardActual || !tiempoInicio) return;
+    
+    const tiempoRespuesta = Math.round((new Date() - tiempoInicio) / 1000);
+    
+    fetch('/api/flashcards/responder', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            flashcard_id: flashcardActual.id,
+            correcta: correcta,
+            tiempo_respuesta: tiempoRespuesta
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        cargarEstadisticas();
+        // Mostrar feedback rápido
+        if (correcta) {
+            mostrarFeedback('¡Correcto!', 'success');
+        } else {
+            mostrarFeedback('Sigue practicando', 'danger');
+        }
+        // Cargar siguiente flashcard después de 1 segundo
+        setTimeout(cargarFlashcardAleatoria, 1000);
+    });
+}
+
+function mostrarFeedback(mensaje, tipo) {
+    const feedbackDiv = document.createElement('div');
+    feedbackDiv.className = `alert alert-${tipo} text-center mt-3`;
+    feedbackDiv.innerHTML = mensaje;
+    feedbackDiv.style.position = 'fixed';
+    feedbackDiv.style.top = '20px';
+    feedbackDiv.style.left = '50%';
+    feedbackDiv.style.transform = 'translateX(-50%)';
+    feedbackDiv.style.zIndex = '1000';
+    document.body.appendChild(feedbackDiv);
+    
+    setTimeout(() => feedbackDiv.remove(), 1000);
 }
 
 function cargarEstadisticas() {
     fetch('/api/flashcards/estadisticas')
         .then(response => response.json())
         .then(data => {
-            const porcentaje = data.porcentaje || 0;
+            const porcentaje = data.porcentaje_completado || 0;
             document.getElementById('progress-bar').style.width = porcentaje + '%';
             document.getElementById('progress-text').innerHTML = 
-                `Has visto ${data.vistas} de ${data.total_flashcards} flashcards (${porcentaje}%)`;
+                `Has completado ${data.completadas} de ${data.total_flashcards} flashcards (${porcentaje}%)`;
             document.getElementById('contador').textContent = 
-                `${data.vistas}/${data.total_flashcards}`;
+                `${data.completadas}/${data.total_flashcards}`;
         });
 }
 
 function resetearFiltros() {
+    document.getElementById('modo').value = 'normal';
     document.getElementById('categoria').value = 'todas';
     document.getElementById('dificultad').value = 'todas';
     document.getElementById('tipo').value = 'todos';
@@ -337,6 +414,7 @@ document.getElementById('flashcard').addEventListener('click', voltearFlashcard)
 .flashcard {
     transition: transform 0.3s;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 .flashcard:hover {
     transform: translateY(-5px);

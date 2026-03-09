@@ -3,17 +3,18 @@ import secrets
 import os
 import json
 import random
-from datetime import timedelta
+from datetime import timedelta, datetime
 from pathlib import Path
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
-app.permanent_session_lifetime = timedelta(days=1)
+app.permanent_session_lifetime = timedelta(days=7)  # Duración de la sesión: 7 días
 
 # Configuración
 app.config['SESSION_TYPE'] = 'filesystem'
 app.config['DEBUG'] = True
 app.config['JSON_AS_ASCII'] = False  # Para mantener tildes en JSON
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(days=7)
 
 # Cargar flashcards desde JSON
 def cargar_flashcards():
@@ -26,7 +27,7 @@ def cargar_flashcards():
 
 flashcards_data = cargar_flashcards()
 
-# Datos de teoría mejorados
+# Datos de teoría
 teoria_data = [
     {
         "id": 1,
@@ -102,7 +103,7 @@ teoria_data = [
     }
 ]
 
-# Ejemplos contrastivos mejorados
+# Ejemplos contrastivos
 ejemplos_data = {
     "introduccion": "Los siguientes ejemplos ilustran el contraste entre estructuras gramaticales e incorrectas:",
     "categorias": [
@@ -135,7 +136,7 @@ ejemplos_data = {
     }
 }
 
-# Ejercicios interactivos (mantener los originales)
+# Ejercicios interactivos
 ejercicios_data = [
     {
         "id": 1,
@@ -205,25 +206,144 @@ def ejercicios():
         session['puntaje'] = 0
     return render_template('ejercicios.html', ejercicios=ejercicios_data)
 
-# Nuevas rutas para flashcards
+# Rutas para flashcards
 @app.route('/flashcards')
 def flashcards():
     """Página principal de flashcards"""
+    # Inicializar datos de usuario si no existen
+    inicializar_datos_usuario()
     return render_template('flashcards.html', total_flashcards=len(flashcards_data))
 
+@app.route('/dashboard')
+def dashboard():
+    """Dashboard de usuario con estadísticas y progreso"""
+    inicializar_datos_usuario()
+    
+    # Obtener estadísticas
+    stats = obtener_estadisticas_usuario()
+    
+    # Obtener flashcards por categoría para gráficos
+    flashcards_por_categoria = {}
+    for flashcard in flashcards_data:
+        cat = flashcard.get('categoria', 'sin categoria')
+        if cat not in flashcards_por_categoria:
+            flashcards_por_categoria[cat] = 0
+        flashcards_por_categoria[cat] += 1
+    
+    # Obtener progreso por categoría
+    progreso_categoria = {}
+    for cat in flashcards_por_categoria.keys():
+        completadas_cat = [f for f in session.get('flashcards_completadas', []) 
+                          if any(fc['categoria'] == cat for fc in flashcards_data if fc['id'] == f)]
+        progreso_categoria[cat] = len(completadas_cat)
+    
+    return render_template('dashboard.html', 
+                         stats=stats,
+                         flashcards_por_categoria=flashcards_por_categoria,
+                         progreso_categoria=progreso_categoria)
+
+# Funciones de inicialización y estadísticas
+def inicializar_datos_usuario():
+    """Inicializar todos los datos del usuario en sesión"""
+    session.permanent = True
+    
+    if 'flashcards_vistas' not in session:
+        session['flashcards_vistas'] = []
+    
+    if 'flashcards_completadas' not in session:
+        session['flashcards_completadas'] = []  # IDs de flashcards completadas
+    
+    if 'flashcards_acertadas' not in session:
+        session['flashcards_acertadas'] = 0
+    
+    if 'flashcards_falladas' not in session:
+        session['flashcards_falladas'] = 0
+    
+    if 'historial_respuestas' not in session:
+        session['historial_respuestas'] = []  # Historial de últimas respuestas
+    
+    if 'racha_actual' not in session:
+        session['racha_actual'] = 0  # Racha de respuestas correctas
+    
+    if 'mejor_racha' not in session:
+        session['mejor_racha'] = 0
+    
+    if 'ultima_actividad' not in session:
+        session['ultima_actividad'] = datetime.now().isoformat()
+    
+    if 'tiempo_total' not in session:
+        session['tiempo_total'] = 0  # Tiempo total de estudio en minutos
+    
+    session.modified = True
+
+def obtener_estadisticas_usuario():
+    """Obtener estadísticas completas del usuario"""
+    vistas = session.get('flashcards_vistas', [])
+    completadas = session.get('flashcards_completadas', [])
+    acertadas = session.get('flashcards_acertadas', 0)
+    falladas = session.get('flashcards_falladas', 0)
+    total_intentos = acertadas + falladas
+    
+    # Calcular porcentajes
+    porcentaje_completado = (len(completadas) / len(flashcards_data)) * 100 if flashcards_data else 0
+    porcentaje_aciertos = (acertadas / total_intentos) * 100 if total_intentos > 0 else 0
+    
+    # Calcular distribución por dificultad
+    dificultades = {'fácil': 0, 'media': 0, 'difícil': 0}
+    for f_id in completadas:
+        flashcard = next((f for f in flashcards_data if f['id'] == f_id), None)
+        if flashcard:
+            dif = flashcard.get('dificultad', 'media')
+            dificultades[dif] = dificultades.get(dif, 0) + 1
+    
+    # Calcular tiempo estimado de estudio
+    tiempo_estudio = session.get('tiempo_total', 0)
+    
+    return {
+        'total_flashcards': len(flashcards_data),
+        'vistas': len(vistas),
+        'completadas': len(completadas),
+        'pendientes': len(flashcards_data) - len(completadas),
+        'acertadas': acertadas,
+        'falladas': falladas,
+        'total_intentos': total_intentos,
+        'porcentaje_completado': round(porcentaje_completado, 1),
+        'porcentaje_aciertos': round(porcentaje_aciertos, 1),
+        'racha_actual': session.get('racha_actual', 0),
+        'mejor_racha': session.get('mejor_racha', 0),
+        'dificultades': dificultades,
+        'tiempo_estudio': tiempo_estudio,
+        'ultima_actividad': session.get('ultima_actividad', '')
+    }
+
+# API endpoints para flashcards
 @app.route('/api/flashcards/random')
 def get_random_flashcard():
-    """Obtener una flashcard aleatoria"""
+    """Obtener una flashcard aleatoria no completada prioritariamente"""
     if not flashcards_data:
         return jsonify({'error': 'No hay flashcards disponibles'}), 404
     
-    # Parámetros de filtro opcionales
+    # Parámetros de filtro
     categoria = request.args.get('categoria')
     dificultad = request.args.get('dificultad')
     tipo = request.args.get('tipo')
+    modo = request.args.get('modo', 'normal')  # 'normal', 'revision', 'solo_pendientes'
+    
+    # Obtener flashcards completadas
+    completadas = session.get('flashcards_completadas', [])
     
     # Filtrar flashcards
     flashcards_filtradas = flashcards_data.copy()
+    
+    if modo == 'solo_pendientes':
+        # Solo flashcards no completadas
+        flashcards_filtradas = [f for f in flashcards_filtradas if f['id'] not in completadas]
+    elif modo == 'revision':
+        # Priorizar flashcards falladas o con más errores
+        # Por ahora, 50% completadas y 50% nuevas
+        if completadas and random.random() < 0.5:
+            # Revisar algunas completadas
+            flashcards_filtradas = [f for f in flashcards_filtradas if f['id'] in completadas]
     
     if categoria and categoria != 'todas':
         flashcards_filtradas = [f for f in flashcards_filtradas if f.get('categoria') == categoria]
@@ -235,19 +355,67 @@ def get_random_flashcard():
         flashcards_filtradas = [f for f in flashcards_filtradas if f.get('tipo') == tipo]
     
     if not flashcards_filtradas:
-        return jsonify({'error': 'No hay flashcards con esos filtros'}), 404
+        # Si no hay con filtros, devolver todas
+        flashcards_filtradas = flashcards_data
     
     flashcard = random.choice(flashcards_filtradas)
     
-    # Registrar en sesión para estadísticas
-    if 'flashcards_vistas' not in session:
-        session['flashcards_vistas'] = []
-    
-    if flashcard['id'] not in session['flashcards_vistas']:
+    # Registrar vista
+    if flashcard['id'] not in session.get('flashcards_vistas', []):
         session['flashcards_vistas'].append(flashcard['id'])
         session.modified = True
     
     return jsonify(flashcard)
+
+@app.route('/api/flashcards/responder', methods=['POST'])
+def responder_flashcard():
+    """Registrar respuesta a una flashcard"""
+    data = request.json
+    flashcard_id = data.get('flashcard_id')
+    correcta = data.get('correcta', False)
+    tiempo_respuesta = data.get('tiempo_respuesta', 0)  # Tiempo en segundos
+    
+    # Inicializar datos si es necesario
+    inicializar_datos_usuario()
+    
+    # Actualizar estadísticas
+    if correcta:
+        session['flashcards_acertadas'] = session.get('flashcards_acertadas', 0) + 1
+        session['racha_actual'] = session.get('racha_actual', 0) + 1
+        
+        # Actualizar mejor racha
+        if session['racha_actual'] > session.get('mejor_racha', 0):
+            session['mejor_racha'] = session['racha_actual']
+        
+        # Si no estaba completada, marcarla como completada
+        completadas = session.get('flashcards_completadas', [])
+        if flashcard_id not in completadas:
+            completadas.append(flashcard_id)
+            session['flashcards_completadas'] = completadas
+    else:
+        session['flashcards_falladas'] = session.get('flashcards_falladas', 0) + 1
+        session['racha_actual'] = 0  # Reiniciar racha
+    
+    # Registrar en historial
+    historial = session.get('historial_respuestas', [])
+    historial.append({
+        'id': flashcard_id,
+        'correcta': correcta,
+        'timestamp': datetime.now().isoformat(),
+        'tiempo': tiempo_respuesta
+    })
+    # Mantener solo últimos 50 registros
+    if len(historial) > 50:
+        historial = historial[-50:]
+    session['historial_respuestas'] = historial
+    
+    # Actualizar tiempo de estudio (aproximado)
+    session['tiempo_total'] = session.get('tiempo_total', 0) + round(tiempo_respuesta / 60, 1)
+    session['ultima_actividad'] = datetime.now().isoformat()
+    
+    session.modified = True
+    
+    return jsonify({'status': 'success'})
 
 @app.route('/api/flashcards/categorias')
 def get_categorias():
@@ -267,23 +435,12 @@ def get_tipos():
     tipos = list(set(f.get('tipo', 'concepto') for f in flashcards_data))
     return jsonify(sorted(tipos))
 
-@app.route('/api/flashcards/<int:flashcard_id>')
-def get_flashcard_by_id(flashcard_id):
-    """Obtener una flashcard por ID"""
-    flashcard = next((f for f in flashcards_data if f['id'] == flashcard_id), None)
-    if flashcard:
-        return jsonify(flashcard)
-    return jsonify({'error': 'Flashcard no encontrada'}), 404
-
 @app.route('/api/flashcards/estadisticas')
 def get_flashcard_stats():
     """Obtener estadísticas de uso de flashcards"""
-    vistas = session.get('flashcards_vistas', [])
-    return jsonify({
-        'total_flashcards': len(flashcards_data),
-        'vistas': len(vistas),
-        'porcentaje': round((len(vistas) / len(flashcards_data)) * 100, 2) if flashcards_data else 0
-    })
+    inicializar_datos_usuario()
+    stats = obtener_estadisticas_usuario()
+    return jsonify(stats)
 
 @app.route('/api/flashcards/buscar')
 def buscar_flashcards():
@@ -299,9 +456,26 @@ def buscar_flashcards():
         or termino in f.get('ejemplo', '').lower()
     ]
     
-    return jsonify(resultados[:10])  # Limitar a 10 resultados
+    return jsonify(resultados[:10])
 
-# Rutas para ejercicios existentes
+@app.route('/api/flashcards/recomendadas')
+def get_recomendadas():
+    """Obtener flashcards recomendadas (las que más necesita repasar)"""
+    completadas = session.get('flashcards_completadas', [])
+    falladas = session.get('flashcards_falladas', 0)
+    
+    # Lógica simple: recomendar las no vistas primero, luego las más difíciles
+    no_vistas = [f for f in flashcards_data if f['id'] not in session.get('flashcards_vistas', [])]
+    
+    if no_vistas:
+        recomendadas = random.sample(no_vistas, min(5, len(no_vistas)))
+    else:
+        # Si ya vio todas, recomendar algunas al azar
+        recomendadas = random.sample(flashcards_data, min(5, len(flashcards_data)))
+    
+    return jsonify(recomendadas)
+
+# Rutas para ejercicios
 @app.route('/check-answer', methods=['POST'])
 def check_answer():
     data = request.json
@@ -355,9 +529,17 @@ def get_progress():
 
 @app.route('/reset-progress', methods=['POST'])
 def reset_progress():
+    """Reiniciar todo el progreso del usuario"""
     session['ejercicios_completados'] = []
     session['puntaje'] = 0
     session['flashcards_vistas'] = []
+    session['flashcards_completadas'] = []
+    session['flashcards_acertadas'] = 0
+    session['flashcards_falladas'] = 0
+    session['racha_actual'] = 0
+    session['mejor_racha'] = 0
+    session['historial_respuestas'] = []
+    session['tiempo_total'] = 0
     session.modified = True
     return jsonify({'status': 'success'})
 
@@ -381,7 +563,7 @@ def internal_error(error):
 @app.context_processor
 def inject_now():
     return {
-        'now': __import__('datetime').datetime.now(),
+        'now': datetime.now(),
         'total_ejercicios': len(ejercicios_data),
         'total_flashcards': len(flashcards_data)
     }
@@ -391,4 +573,5 @@ if __name__ == '__main__':
     print(f"📚 Total flashcards cargadas: {len(flashcards_data)}")
     print(f"🎯 Total ejercicios: {len(ejercicios_data)}")
     print(f"🚀 Servidor iniciado en http://localhost:{port}")
+    print(f"📊 Dashboard disponible en: http://localhost:{port}/dashboard")
     app.run(host='0.0.0.0', port=port, debug=True)

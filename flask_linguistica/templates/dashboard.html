@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Progreso Personal{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">
+        <i class="bi bi-speedometer2 me-2"></i>
+        Dashboard de Progreso Personal
+    </h2>
+    
+    <!-- Tarjetas de resumen -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title">Flashcards</h6>
+                            <h2 class="mb-0">{{ stats.completadas }}/{{ stats.total_flashcards }}</h2>
+                        </div>
+                        <i class="bi bi-card-list" style="font-size: 3rem;"></i>
+                    </div>
+                    <small>{{ stats.porcentaje_completado }}% completado</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-success">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-title">Aciertos</h6>
+                            <h2 class="mb-0">{{ stats.acertadas }}</h2>
+                        </div>
+                        <i class="bi bi-check-circle" style="font-size: 3rem;"></i>
+                    </div>
+                    <small>{{ stats.porcentaje_aciertos }}% de precisión</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-warning">
+                <div class="card-body">
+                    <div class="d-flex justify-between align-items-center">
+                        <div>
+                            <h6 class="card-title">Racha actual</h6>
+                            <h2 class="mb-0">{{ stats.racha_actual }}</h2>
+                        </div>
+                        <i class="bi bi-fire" style="font-size: 3rem;"></i>
+                    </div>
+                    <small>Mejor: {{ stats.mejor_racha }}</small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <div class="card text-white bg-info">
+                <div class="card-body">
+                    <div class="d-flex justify-between align-items-center">
+                        <div>
+                            <h6 class="card-title">Tiempo estudio</h6>
+                            <h2 class="mb-0">{{ stats.tiempo_estudio }} min</h2>
+                        </div>
+                        <i class="bi bi-clock-history" style="font-size: 3rem;"></i>
+                    </div>
+                    <small>Total aproximado</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Gráficos de progreso -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Progreso por Categoría</h5>
+                </div>
+                <div class="card-body">
+                    {% for categoria, total in flashcards_por_categoria.items() %}
+                    {% set completadas = progreso_categoria.get(categoria, 0) %}
+                    {% set porcentaje = (completadas / total * 100) if total > 0 else 0 %}
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <span>{{ categoria|capitalize }}</span>
+                            <span>{{ completadas }}/{{ total }} ({{ porcentaje|round }}%)</span>
+                        </div>
+                        <div class="progress" style="height: 10px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ porcentaje }}%"></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Rendimiento por Dificultad</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <div class="p-3">
+                                <h3 class="text-success">{{ stats.dificultades.fácil }}</h3>
+                                <small>Fáciles</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="p-3">
+                                <h3 class="text-warning">{{ stats.dificultades.media }}</h3>
+                                <small>Medias</small>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="p-3">
+                                <h3 class="text-danger">{{ stats.dificultades.difícil }}</h3>
+                                <small>Difíciles</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Gráfico de aciertos/fallos -->
+                    <div class="mt-4">
+                        <h6>Total intentos: {{ stats.total_intentos }}</h6>
+                        <div class="progress" style="height: 20px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ stats.porcentaje_aciertos }}%">
+                                {{ stats.acertadas }} aciertos
+                            </div>
+                            <div class="progress-bar bg-danger" role="progressbar" 
+                                 style="width: {{ 100 - stats.porcentaje_aciertos }}%">
+                                {{ stats.falladas }} fallos
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Metas y próximos pasos -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Metas de Estudio</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6>Próximo hito</h6>
+                                {% set siguiente_hito = (stats.completadas // 10 + 1) * 10 %}
+                                {% if siguiente_hito <= stats.total_flashcards %}
+                                <div class="d-flex justify-content-between">
+                                    <span>{{ siguiente_hito }} flashcards</span>
+                                    <span>{{ stats.completadas }}/{{ siguiente_hito }}</span>
+                                </div>
+                                <div class="progress" style="height: 10px;">
+                                    <div class="progress-bar" role="progressbar" 
+                                         style="width: {{ (stats.completadas / siguiente_hito * 100) if siguiente_hito > 0 else 0 }}%"></div>
+                                </div>
+                                {% else %}
+                                <p class="text-success">¡Completaste todas las flashcards!</p>
+                                {% endif %}
+                            </div>
+                            
+                            <div>
+                                <h6>Recomendaciones</h6>
+                                <ul class="list-unstyled">
+                                    {% if stats.pendientes > 0 %}
+                                    <li><i class="bi bi-arrow-right-circle text-primary me-2"></i>Te faltan {{ stats.pendientes }} flashcards por ver</li>
+                                    {% endif %}
+                                    {% if stats.porcentaje_aciertos < 70 and stats.total_intentos > 0 %}
+                                    <li><i class="bi bi-exclamation-triangle text-warning me-2"></i>Necesitas repasar más</li>
+                                    {% endif %}
+                                    {% if stats.racha_actual > 5 %}
+                                    <li><i class="bi bi-star text-success me-2"></i>¡Vas en racha! Sigue así</li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6>Última actividad</h6>
+                                    <p class="mb-2">
+                                        <i class="bi bi-calendar me-2"></i>
+                                        {{ stats.ultima_actividad[:10] if stats.ultima_actividad else 'Nunca' }}
+                                    </p>
+                                    <p>
+                                        <i class="bi bi-clock me-2"></i>
+                                        {{ stats.tiempo_estudio }} minutos totales
+                                    </p>
+                                    <a href="{{ url_for('flashcards') }}" class="btn btn-primary w-100">
+                                        <i class="bi bi-play-circle me-2"></i>Continuar estudiando
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Logros</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-trophy-fill text-warning me-2"></i>
+                            <span>Principiante</span>
+                            {% if stats.completadas >= 10 %}
+                            <span class="badge bg-success ms-2">✔️</span>
+                            {% endif %}
+                        </div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-warning" role="progressbar" 
+                                 style="width: {{ (stats.completadas / 10 * 100) if stats.completadas < 10 else 100 }}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-trophy-fill text-info me-2"></i>
+                            <span>Estudiante</span>
+                            {% if stats.completadas >= 25 %}
+                            <span class="badge bg-success ms-2">✔️</span>
+                            {% endif %}
+                        </div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-info" role="progressbar" 
+                                 style="width: {{ (stats.completadas / 25 * 100) if stats.completadas < 25 else 100 }}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-trophy-fill text-primary me-2"></i>
+                            <span>Avanzado</span>
+                            {% if stats.completadas >= 50 %}
+                            <span class="badge bg-success ms-2">✔️</span>
+                            {% endif %}
+                        </div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-primary" role="progressbar" 
+                                 style="width: {{ (stats.completadas / 50 * 100) if stats.completadas < 50 else 100 }}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-trophy-fill text-success me-2"></i>
+                            <span>Experto</span>
+                            {% if stats.completadas >= 75 %}
+                            <span class="badge bg-success ms-2">✔️</span>
+                            {% endif %}
+                        </div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-success" role="progressbar" 
+                                 style="width: {{ (stats.completadas / 75 * 100) if stats.completadas < 75 else 100 }}%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="bi bi-trophy-fill text-danger me-2"></i>
+                            <span>Maestro</span>
+                            {% if stats.completadas >= 100 %}
+                            <span class="badge bg-success ms-2">✔️</span>
+                            {% endif %}
+                        </div>
+                        <div class="progress" style="height: 5px;">
+                            <div class="progress-bar bg-danger" role="progressbar" 
+                                 style="width: {{ (stats.completadas / 100 * 100) if stats.completadas < 100 else 100 }}%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Botón de reinicio y acciones -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <button class="btn btn-danger" onclick="reiniciarProgreso()">
+                <i class="bi bi-arrow-counterclockwise me-2"></i>Reiniciar Progreso
+            </button>
+            <a href="{{ url_for('flashcards') }}" class="btn btn-primary ms-2">
+                <i class="bi bi-card-list me-2"></i>Ir a Flashcards
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+function reiniciarProgreso() {
+    if (confirm('¿Estás seguro? Todo tu progreso se perderá permanentemente.')) {
+        fetch('/reset-progress', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Progreso reiniciado correctamente');
+                location.reload();
+            }
+        });
+    }
+}
+
+// Actualizar estadísticas cada 30 segundos
+setInterval(function() {
+    fetch('/api/flashcards/estadisticas')
+        .then(response => response.json())
+        .then(data => {
+            // Aquí podrías actualizar dinámicamente si quieres
+            console.log('Estadísticas actualizadas:', data);
+        });
+}, 30000);
+</script>
+{% endblock %}
