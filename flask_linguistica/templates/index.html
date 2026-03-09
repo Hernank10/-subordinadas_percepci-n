@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Lingüística Educativa{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container text-center">
+        <h1 class="display-4 fw-bold">Verbos de Percepción y Predicados Estativos</h1>
+        <p class="lead">Explora las restricciones sintácticas entre verbos de percepción y predicados estativos en español</p>
+        <a href="{{ url_for('teoria') }}" class="btn btn-light btn-lg mt-3">Comenzar a aprender</a>
+    </div>
+</section>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-book feature-icon"></i>
+                    <h5 class="card-title">Teoría</h5>
+                    <p class="card-text">Aprende los fundamentos sobre predicados estativos y dinámicos, y su relación con los verbos de percepción.</p>
+                    <a href="{{ url_for('teoria') }}" class="btn btn-primary">Ver teoría</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-collection feature-icon"></i>
+                    <h5 class="card-title">Ejemplos</h5>
+                    <p class="card-text">Explora ejemplos contrastivos de estructuras correctas e incorrectas.</p>
+                    <a href="{{ url_for('ejemplos') }}" class="btn btn-primary">Ver ejemplos</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-pencil-square feature-icon"></i>
+                    <h5 class="card-title">Ejercicios</h5>
+                    <p class="card-text">Pon a prueba tus conocimientos con ejercicios interactivos.</p>
+                    <a href="{{ url_for('ejercicios') }}" class="btn btn-primary">Practicar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

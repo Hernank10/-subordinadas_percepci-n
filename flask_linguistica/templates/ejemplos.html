@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Ejemplos - Lingüística Educativa{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Ejemplos Contrastivos</h2>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0">Estructuras Incorrectas</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for ejemplo in ejemplos.incorrectos %}
+                        <li class="list-group-item example-incorrect">{{ ejemplo }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Estructuras Correctas</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        {% for ejemplo in ejemplos.correctos %}
+                        <li class="list-group-item example-correct">{{ ejemplo }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <div class="alert alert-info">
+            <h5><i class="bi bi-info-circle me-2"></i>Nota importante</h5>
+            <p class="mb-0">La gramaticalidad no depende de si la percepción es epistémica o no epistémica, sino de la compatibilidad aspectual entre el verbo de percepción y el predicado subordinado.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

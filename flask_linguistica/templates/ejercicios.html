@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+
+{% block title %}Ejercicios - Lingüística Educativa{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Practica lo Aprendido</h2>
+    
+    <div class="exercise-container" id="exercise-container">
+        <div class="progress mb-3">
+            <div class="progress-bar" role="progressbar" style="width: 0%" id="progress-bar"></div>
+        </div>
+        <p id="progress-text" class="text-muted">Progreso: 0/{{ ejercicios|length }} ejercicios completados</p>
+        
+        <div id="exercise-area">
+        </div>
+        
+        <div id="results" class="mt-5 text-center" style="display: none;">
+            <h3>¡Completaste todos los ejercicios!</h3>
+            <p id="final-score" class="h5 mb-3"></p>
+            <button class="btn btn-success" onclick="resetExercises()">Reiniciar ejercicios</button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const ejercicios = {{ ejercicios|tojson }};
+    let currentExercise = 0;
+    let score = 0;
+    
+    function loadExercise(index) {
+        if (index >= ejercicios.length) {
+            showResults();
+            return;
+        }
+        
+        const ejercicio = ejercicios[index];
+        let html = `
+            <div class="exercise" id="exercise-${ejercicio.id}">
+                <h4>Ejercicio ${index + 1}: ${ejercicio.pregunta}</h4>
+        `;
+        
+        if (ejercicio.tipo === 'multiple') {
+            ejercicio.opciones.forEach((opcion, i) => {
+                html += `
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="exercise${ejercicio.id}" 
+                               id="option${ejercicio.id}-${i}" value="${i}">
+                        <label class="form-check-label" for="option${ejercicio.id}-${i}">
+                            ${opcion}
+                        </label>
+                    </div>
+                `;
+            });
+        } else {
+            html += `
+                <div class="mb-3">
+                    <input type="text" class="form-control" id="correction-${ejercicio.id}" 
+                           placeholder="Escribe tu corrección aquí">
+                </div>
+            `;
+        }
+        
+        html += `
+            <button class="btn btn-primary" onclick="checkExercise(${ejercicio.id})">Verificar respuesta</button>
+            <div id="feedback-${ejercicio.id}" class="answer-feedback"></div>
+        </div>
+        `;
+        
+        document.getElementById('exercise-area').innerHTML = html;
+    }
+    
+    function checkExercise(ejercicioId) {
+        const ejercicio = ejercicios.find(e => e.id === ejercicioId);
+        let userAnswer;
+        
+        if (ejercicio.tipo === 'multiple') {
+            const selected = document.querySelector(`input[name="exercise${ejercicioId}"]:checked`);
+            if (!selected) {
+                alert("Por favor, selecciona una respuesta.");
+                return;
+            }
+            userAnswer = parseInt(selected.value);
+        } else {
+            userAnswer = document.getElementById(`correction-${ejercicioId}`).value.trim();
+        }
+        
+        fetch('/check-answer', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ejercicio_id: ejercicioId,
+                respuesta: userAnswer
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            const feedback = document.getElementById(`feedback-${ejercicioId}`);
+            feedback.style.display = 'block';
+            feedback.className = `answer-feedback ${data.correcto ? 'correct-answer' : 'incorrect-answer'}`;
+            
+            if (data.correcto) {
+                score++;
+                feedback.innerHTML = `<strong>¡Correcto!</strong> ${data.explicacion}`;
+            } else {
+                feedback.innerHTML = `<strong>Incorrecto.</strong> ${data.explicacion}`;
+            }
+            
+            updateProgress();
+            
+            setTimeout(() => {
+                currentExercise++;
+                if (currentExercise < ejercicios.length) {
+                    loadExercise(currentExercise);
+                } else {
+                    document.getElementById('exercise-area').innerHTML = '';
+                    showResults();
+                }
+            }, 1500);
+        });
+    }
+    
+    function updateProgress() {
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const progress = ((currentExercise + 1) / ejercicios.length) * 100;
+        
+        progressBar.style.width = `${progress}%`;
+        progressText.textContent = `Progreso: ${currentExercise + 1}/${ejercicios.length} ejercicios completados`;
+    }
+    
+    function showResults() {
+        const results = document.getElementById('results');
+        const finalScore = document.getElementById('final-score');
+        
+        finalScore.textContent = `Puntuación: ${score} de ${ejercicios.length} correctas`;
+        results.style.display = 'block';
+    }
+    
+    function resetExercises() {
+        fetch('/reset-progress', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(() => {
+            currentExercise = 0;
+            score = 0;
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('progress-bar').style.width = '0%';
+            document.getElementById('progress-text').textContent = 'Progreso: 0/3 ejercicios completados';
+            loadExercise(0);
+        });
+    }
+    
+    loadExercise(0);
+</script>
+{% endblock %}

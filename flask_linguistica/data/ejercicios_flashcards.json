@@ -1,0 +1,904 @@
+{
+  "flashcards": [
+    {
+      "id": 1,
+      "tipo": "concepto",
+      "categoria": "definiciones",
+      "dificultad": "fácil",
+      "frontal": "¿Qué son los predicados estativos?",
+      "reverso": "Son predicados que describen estados o condiciones sin desarrollo temporal. No tienen duración delimitada ni progresan en el tiempo. Ejemplos: saber, estar, tener.",
+      "ejemplo": "María sabe la respuesta (estado)"
+    },
+    {
+      "id": 2,
+      "tipo": "concepto",
+      "categoria": "definiciones",
+      "dificultad": "fácil",
+      "frontal": "¿Qué son los predicados dinámicos?",
+      "reverso": "Son predicados que denotan acciones o eventos con desarrollo temporal. Tienen inicio, fin y fases internas. Ejemplos: correr, hablar, construir.",
+      "ejemplo": "Juan corre en el parque (acción)"
+    },
+    {
+      "id": 3,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'saber'",
+      "reverso": "Es un predicado ESTATIVO. Denota un estado de conocimiento, no una acción.",
+      "ejemplo": "Sé que vendrás mañana"
+    },
+    {
+      "id": 4,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'correr'",
+      "reverso": "Es un predicado DINÁMICO. Denota una acción con desarrollo temporal.",
+      "ejemplo": "Los niños corren en el patio"
+    },
+    {
+      "id": 5,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'estar'",
+      "reverso": "Es un predicado ESTATIVO. Describe un estado o condición.",
+      "ejemplo": "Estoy cansado"
+    },
+    {
+      "id": 6,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'comer'",
+      "reverso": "Es un predicado DINÁMICO. Denota una acción con desarrollo.",
+      "ejemplo": "Comemos a las dos"
+    },
+    {
+      "id": 7,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Vi a María estar nerviosa'",
+      "reverso": "INCORRECTA. 'Estar' es estativo y no puede usarse con infinitivo después de verbo de percepción.",
+      "ejemplo": "Forma correcta: 'Vi que María estaba nerviosa'"
+    },
+    {
+      "id": 8,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Observé que Juan sabía la respuesta'",
+      "reverso": "CORRECTA. Usa 'que' + subordinada, que admite el estativo 'saber'.",
+      "ejemplo": "Esta estructura es gramatical"
+    },
+    {
+      "id": 9,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Oí a Pedro tocar el piano'",
+      "reverso": "CORRECTA. 'Tocar' es dinámico y puede usarse con infinitivo.",
+      "ejemplo": "La acción es perceptible"
+    },
+    {
+      "id": 10,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? '*Percibí tener hambre a los niños'",
+      "reverso": "INCORRECTA. 'Tener' es estativo y requiere estructura con 'que'.",
+      "ejemplo": "Correcto: 'Percibí que los niños tenían hambre'"
+    },
+    {
+      "id": 11,
+      "tipo": "concepto",
+      "categoria": "verbos_percepcion",
+      "dificultad": "media",
+      "frontal": "¿Qué estructura requieren los predicados estativos con verbos de percepción?",
+      "reverso": "Requieren la estructura con 'que' + subordinada (oración completa), no la estructura de infinitivo.",
+      "ejemplo": "Vi que María estaba cansada (✓) vs *Vi estar cansada a María (✗)"
+    },
+    {
+      "id": 12,
+      "tipo": "concepto",
+      "categoria": "verbos_percepcion",
+      "dificultad": "media",
+      "frontal": "¿Qué estructura admiten los predicados dinámicos con verbos de percepción?",
+      "reverso": "Admiten tanto la estructura de infinitivo como la de 'que' + subordinada.",
+      "ejemplo": "Vi a Juan correr / Vi que Juan corría (ambas correctas)"
+    },
+    {
+      "id": 13,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Noté ser inteligente a María'",
+      "reverso": "Corrección: 'Noté que María era inteligente' (cambiar a estructura con 'que')",
+      "ejemplo": "El verbo 'ser' es estativo"
+    },
+    {
+      "id": 14,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Escuché saber francés al profesor'",
+      "reverso": "Corrección: 'Escuché que el profesor sabía francés'",
+      "ejemplo": "'Saber' es estativo"
+    },
+    {
+      "id": 15,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Por qué los estativos no pueden ir en infinitivo después de verbos de percepción?",
+      "reverso": "Porque el infinitivo después de verbos de percepción requiere dinamicidad (eventos en desarrollo), mientras que los estativos describen estados sin desarrollo temporal.",
+      "ejemplo": "Conflicto aspectual: estado vs. evento en progreso"
+    },
+    {
+      "id": 16,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Qué es la percepción no epistémica?",
+      "reverso": "Es la percepción directa de eventos o acciones, sin mediación inferencial. Corresponde a la estructura de infinitivo.",
+      "ejemplo": "Vi a María bailar (percepción directa del evento)"
+    },
+    {
+      "id": 17,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Qué es la percepción epistémica?",
+      "reverso": "Es la percepción que implica conocimiento o inferencia, no necesariamente percepción directa. Corresponde a la estructura con 'que'.",
+      "ejemplo": "Vi que María estaba triste (inferencia del estado)"
+    },
+    {
+      "id": 18,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "media",
+      "frontal": "Compara: 'Vi a Juan correr' vs '*Vi a Juan saber'",
+      "reverso": "La primera es correcta ('correr' es dinámico). La segunda es incorrecta ('saber' es estativo y requiere 'que').",
+      "ejemplo": "El contraste muestra la restricción aspectual"
+    },
+    {
+      "id": 19,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "media",
+      "frontal": "Compara: 'Oí cantar a María' vs '*Oí estar contenta a María'",
+      "reverso": "Primera correcta ('cantar' es dinámico). Segunda incorrecta ('estar' es estativo).",
+      "ejemplo": "Solo acciones pueden ir en infinitivo"
+    },
+    {
+      "id": 20,
+      "tipo": "concepto",
+      "categoria": "verbos",
+      "dificultad": "fácil",
+      "frontal": "Menciona 5 verbos de percepción en español",
+      "reverso": "Ver, oír, escuchar, observar, percibir, notar, mirar, sentir",
+      "ejemplo": "Todos estos verbos tienen las mismas restricciones"
+    },
+    {
+      "id": 21,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'parecer'",
+      "reverso": "Es un predicado ESTATIVO. Indica apariencia o impresión.",
+      "ejemplo": "Parece cansado"
+    },
+    {
+      "id": 22,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'construir'",
+      "reverso": "Es un predicado DINÁMICO. Denota una acción con desarrollo.",
+      "ejemplo": "Construyen una casa"
+    },
+    {
+      "id": 23,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'conocer'",
+      "reverso": "Es un predicado ESTATIVO. Denota un estado de conocimiento.",
+      "ejemplo": "Conozco a tu hermano"
+    },
+    {
+      "id": 24,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'escribir'",
+      "reverso": "Es un predicado DINÁMICO. Denota una acción con desarrollo.",
+      "ejemplo": "Escribe una carta"
+    },
+    {
+      "id": 25,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'creer'",
+      "reverso": "Es un predicado ESTATIVO. Denota un estado de opinión o creencia.",
+      "ejemplo": "Creo en la justicia"
+    },
+    {
+      "id": 26,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'saltar'",
+      "reverso": "Es un predicado DINÁMICO. Denota una acción momentánea.",
+      "ejemplo": "El niño salta"
+    },
+    {
+      "id": 27,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Observamos construir el edificio'",
+      "reverso": "CORRECTA. 'Construir' es dinámico y puede ir en infinitivo.",
+      "ejemplo": "La construcción es un evento perceptible"
+    },
+    {
+      "id": 28,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? '*Observamos saber la noticia'",
+      "reverso": "INCORRECTA. 'Saber' es estativo y requiere estructura con 'que'.",
+      "ejemplo": "Correcto: 'Observamos que sabían la noticia'"
+    },
+    {
+      "id": 29,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Escuché a los pájaros cantar'",
+      "reverso": "CORRECTA. 'Cantar' es dinámico y perceptible.",
+      "ejemplo": "Acción auditiva directa"
+    },
+    {
+      "id": 30,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? '*Escuché a los pájaros tener hambre'",
+      "reverso": "INCORRECTA. 'Tener' es estativo, requiere 'que'.",
+      "ejemplo": "Correcto: 'Escuché que los pájaros tenían hambre'"
+    },
+    {
+      "id": 31,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Qué son las fases internas de un evento?",
+      "reverso": "Son las etapas de desarrollo de un evento: inicio, proceso y fin. Los predicados dinámicos las tienen; los estativos no.",
+      "ejemplo": "Correr: inicio (echar a correr), proceso (corriendo), fin (parar)"
+    },
+    {
+      "id": 32,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Por qué los estados no son perceptibles directamente?",
+      "reverso": "Porque los estados son internos, no tienen manifestación física observable en desarrollo. Solo podemos inferirlos de acciones o evidencias.",
+      "ejemplo": "Vemos a alguien sonreír (acción) e inferimos que está contento (estado)"
+    },
+    {
+      "id": 33,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Vimos estar enojado al profesor'",
+      "reverso": "Corrección: 'Vimos que el profesor estaba enojado'",
+      "ejemplo": "Cambiar a estructura con 'que'"
+    },
+    {
+      "id": 34,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Oí estar preocupada a mi hermana'",
+      "reverso": "Corrección: 'Oí que mi hermana estaba preocupada'",
+      "ejemplo": "El estado requiere subordinada"
+    },
+    {
+      "id": 35,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Percibí tener sueño a los niños'",
+      "reverso": "Corrección: 'Percibí que los niños tenían sueño'",
+      "ejemplo": "Usar 'que' + subordinada"
+    },
+    {
+      "id": 36,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Noté ser tarde'",
+      "reverso": "Corrección: 'Noté que era tarde'",
+      "ejemplo": "El verbo 'ser' requiere 'que'"
+    },
+    {
+      "id": 37,
+      "tipo": "concepto",
+      "categoria": "verbos_percepcion",
+      "dificultad": "media",
+      "frontal": "¿Qué verbos de percepción pueden usarse en ambas estructuras?",
+      "reverso": "Todos: ver, oír, escuchar, observar, percibir, notar, mirar, sentir. La diferencia está en el tipo de predicado subordinado.",
+      "ejemplo": "Vi a Juan correr / Vi que Juan estaba cansado"
+    },
+    {
+      "id": 38,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "media",
+      "frontal": "Compara: 'Sentí llegar a Pedro' vs '*Sentí estar Pedro'",
+      "reverso": "Primera correcta ('llegar' es dinámico). Segunda incorrecta ('estar' es estativo).",
+      "ejemplo": "La llegada es un evento, el estado no"
+    },
+    {
+      "id": 39,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "media",
+      "frontal": "Compara: 'Observamos jugar a los niños' vs '*Observamos tener juguetes los niños'",
+      "reverso": "Primera correcta ('jugar' es dinámico). Segunda incorrecta ('tener' es estativo).",
+      "ejemplo": "Jugar es acción, tener es estado"
+    },
+    {
+      "id": 40,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Qué relación hay entre aspectualidad y percepción?",
+      "reverso": "La percepción directa capta eventos en desarrollo (aspecto imperfectivo/dinámico). Los estados carecen de esa dinamicidad, por eso requieren mediación lingüística (estructura con 'que').",
+      "ejemplo": "La gramática refleja esta distinción cognitiva"
+    },
+    {
+      "id": 41,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'dormir'",
+      "reverso": "Es un predicado DINÁMICO (aunque parezca estado, es una actividad con desarrollo).",
+      "ejemplo": "Duerme profundamente"
+    },
+    {
+      "id": 42,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'permanecer'",
+      "reverso": "Es un predicado ESTATIVO. Indica duración de un estado.",
+      "ejemplo": "Permanece callado"
+    },
+    {
+      "id": 43,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'leer'",
+      "reverso": "Es un predicado DINÁMICO. Actividad con desarrollo.",
+      "ejemplo": "Lee un libro"
+    },
+    {
+      "id": 44,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'desear'",
+      "reverso": "Es un predicado ESTATIVO. Estado psicológico.",
+      "ejemplo": "Desea viajar"
+    },
+    {
+      "id": 45,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Miro llover'",
+      "reverso": "CORRECTA. 'Llover' es dinámico (evento meteorológico en desarrollo).",
+      "ejemplo": "La lluvia es perceptible"
+    },
+    {
+      "id": 46,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? '*Miro haber lluvia'",
+      "reverso": "INCORRECTA. 'Haber' es estativo en este uso.",
+      "ejemplo": "Correcto: 'Miro que hay lluvia'"
+    },
+    {
+      "id": 47,
+      "tipo": "concepto",
+      "categoria": "verbos",
+      "dificultad": "fácil",
+      "frontal": "¿Cuál es la diferencia entre 'ver' y 'mirar'?",
+      "reverso": "'Ver' es percepción involuntaria; 'mirar' es percepción voluntaria. Ambos tienen las mismas restricciones sintácticas.",
+      "ejemplo": "Vi / Miré a Juan correr"
+    },
+    {
+      "id": 48,
+      "tipo": "concepto",
+      "categoria": "verbos",
+      "dificultad": "fácil",
+      "frontal": "¿Cuál es la diferencia entre 'oír' y 'escuchar'?",
+      "reverso": "'Oír' es percepción auditiva involuntaria; 'escuchar' es voluntaria. Mismas restricciones gramaticales.",
+      "ejemplo": "Oí / Escuché cantar a María"
+    },
+    {
+      "id": 49,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "difícil",
+      "frontal": "¿Por qué 'ver' admite 'que' con estativos pero no infinitivo?",
+      "reverso": "Porque 'ver + infinitivo' requiere percepción directa de un evento; los estativos no son eventos perceptibles directamente.",
+      "ejemplo": "*Vi estar triste a Juan vs Vi que Juan estaba triste"
+    },
+    {
+      "id": 50,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "difícil",
+      "frontal": "Analiza: 'Observé que el edificio era alto'",
+      "reverso": "Correcta. 'Ser alto' es estativo y requiere estructura con 'que'. La altura se infiere, no se percibe directamente como evento.",
+      "ejemplo": "Percepción epistémica (inferencia)"
+    },
+    {
+      "id": 51,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'pensar'",
+      "reverso": "Es un predicado DINÁMICO (actividad mental con desarrollo).",
+      "ejemplo": "Piensa en su futuro"
+    },
+    {
+      "id": 52,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'odiar'",
+      "reverso": "Es un predicado ESTATIVO. Estado emocional duradero.",
+      "ejemplo": "Odia las mentiras"
+    },
+    {
+      "id": 53,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'nadar'",
+      "reverso": "Es un predicado DINÁMICO. Actividad física con desarrollo.",
+      "ejemplo": "Nada en la piscina"
+    },
+    {
+      "id": 54,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'consistir'",
+      "reverso": "Es un predicado ESTATIVO. Indica composición o esencia.",
+      "ejemplo": "El problema consiste en..."
+    },
+    {
+      "id": 55,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Notamos llegar tarde a Juan'",
+      "reverso": "CORRECTA. 'Llegar' es dinámico (evento puntual pero perceptible).",
+      "ejemplo": "La llegada es un evento"
+    },
+    {
+      "id": 56,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? '*Notamos ser puntual Juan'",
+      "reverso": "INCORRECTA. 'Ser puntual' es estativo, requiere 'que'.",
+      "ejemplo": "Correcto: 'Notamos que Juan era puntual'"
+    },
+    {
+      "id": 57,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Qué papel juega la telicidad en la percepción?",
+      "reverso": "Los eventos télicos (con meta) como 'construir' son perceptibles en su desarrollo; los estados no tienen telicidad.",
+      "ejemplo": "Ver construir (proceso) vs *Ver tener (estado)"
+    },
+    {
+      "id": 58,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "Explica la diferencia entre 'ver a Juan correr' y 'ver que Juan corre'",
+      "reverso": "La primera es percepción directa del evento; la segunda puede ser inferencia o constatación de un hábito.",
+      "ejemplo": "Matices de significado según estructura"
+    },
+    {
+      "id": 59,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Percibí estar contentos a los alumnos'",
+      "reverso": "Corrección: 'Percibí que los alumnos estaban contentos'",
+      "ejemplo": "Usar subordinada con 'que'"
+    },
+    {
+      "id": 60,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Observé tener razón a Pedro'",
+      "reverso": "Corrección: 'Observé que Pedro tenía razón'",
+      "ejemplo": "'Tener razón' es estativo"
+    },
+    {
+      "id": 61,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'nevar'",
+      "reverso": "Es un predicado DINÁMICO. Evento meteorológico en desarrollo.",
+      "ejemplo": "Está nevando"
+    },
+    {
+      "id": 62,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'existir'",
+      "reverso": "Es un predicado ESTATIVO. Denota existencia.",
+      "ejemplo": "Existen muchas teorías"
+    },
+    {
+      "id": 63,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'bailar'",
+      "reverso": "Es un predicado DINÁMICO. Actividad con desarrollo.",
+      "ejemplo": "Baila salsa"
+    },
+    {
+      "id": 64,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'merecer'",
+      "reverso": "Es un predicado ESTATIVO. Indica mérito o valor.",
+      "ejemplo": "Merece un premio"
+    },
+    {
+      "id": 65,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Sentimos vibrar el suelo'",
+      "reverso": "CORRECTA. 'Vibrar' es dinámico, perceptible.",
+      "ejemplo": "Percepción directa del evento"
+    },
+    {
+      "id": 66,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? '*Sentimos ser de noche'",
+      "reverso": "INCORRECTA. 'Ser de noche' es estativo.",
+      "ejemplo": "Correcto: 'Sentimos que era de noche'"
+    },
+    {
+      "id": 67,
+      "tipo": "concepto",
+      "categoria": "linguistica",
+      "dificultad": "difícil",
+      "frontal": "¿Qué dice la teoría de la iconicidad sobre este fenómeno?",
+      "reverso": "La estructura lingüística refleja la estructura de la experiencia: eventos dinámicos → estructura dinámica (infinitivo); estados → estructura estativa (subordinada con 'que').",
+      "ejemplo": "Iconicidad en la sintaxis"
+    },
+    {
+      "id": 68,
+      "tipo": "concepto",
+      "categoria": "linguistica",
+      "dificultad": "difícil",
+      "frontal": "¿Cómo se explica este fenómeno en otras lenguas?",
+      "reverso": "Muchas lenguas tienen restricciones similares: el inglés usa -ing para eventos (I saw him running) pero no para estados (*I saw him knowing).",
+      "ejemplo": "Patrón跨linguístico"
+    },
+    {
+      "id": 69,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "difícil",
+      "frontal": "Compara: 'Vi caer la lluvia' vs '*Vi haber lluvia'",
+      "reverso": "'Caer' es dinámico → correcto. 'Haber' es estativo → incorrecto.",
+      "ejemplo": "El mismo fenómeno natural, distinta aspectualidad"
+    },
+    {
+      "id": 70,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "difícil",
+      "frontal": "Analiza: 'Observamos amanecer'",
+      "reverso": "Correcta. 'Amanecer' es un evento dinámico (proceso de salida del sol).",
+      "ejemplo": "Evento perceptible en desarrollo"
+    },
+    {
+      "id": 71,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'caminar'",
+      "reverso": "Dinámico",
+      "ejemplo": "Camina despacio"
+    },
+    {
+      "id": 72,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'contener'",
+      "reverso": "Estativo",
+      "ejemplo": "La caja contiene libros"
+    },
+    {
+      "id": 73,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'volar'",
+      "reverso": "Dinámico",
+      "ejemplo": "El avión vuela"
+    },
+    {
+      "id": 74,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'depender'",
+      "reverso": "Estativo",
+      "ejemplo": "Depende de ti"
+    },
+    {
+      "id": 75,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Vimos nevar'",
+      "reverso": "CORRECTA. 'Nevar' es dinámico.",
+      "ejemplo": "Evento meteorológico perceptible"
+    },
+    {
+      "id": 76,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? '*Vimos haber nieve'",
+      "reverso": "INCORRECTA. 'Haber nieve' es estativo.",
+      "ejemplo": "Correcto: 'Vimos que había nieve'"
+    },
+    {
+      "id": 77,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Qué son los predicados de estadio individual vs estadio de nivel?",
+      "reverso": "Los de estadio individual (ser inteligente) son estativos permanentes; los de nivel (estar cansado) son estativos temporales. Ambos son estativos y tienen la misma restricción.",
+      "ejemplo": "*Vi ser inteligente / *Vi estar cansado"
+    },
+    {
+      "id": 78,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Puede un mismo verbo ser estativo y dinámico?",
+      "reverso": "Sí, por polisemia: 'tener' (posesión: estativo) vs 'tener' (acción: 'tener un hijo' puede ser dinámico en algunas interpretaciones).",
+      "ejemplo": "Contexto determina aspectualidad"
+    },
+    {
+      "id": 79,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Escuché estar lloviendo'",
+      "reverso": "Corrección: 'Escuché que estaba lloviendo'",
+      "ejemplo": "'Estar lloviendo' es estativo en esta construcción"
+    },
+    {
+      "id": 80,
+      "tipo": "ejemplo",
+      "categoria": "correccion",
+      "dificultad": "media",
+      "frontal": "Corrige: '*Percibí ser importante'",
+      "reverso": "Corrección: 'Percibí que era importante'",
+      "ejemplo": "Usar 'que'"
+    },
+    {
+      "id": 81,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'reir'",
+      "reverso": "Dinámico",
+      "ejemplo": "Ríe a carcajadas"
+    },
+    {
+      "id": 82,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'significar'",
+      "reverso": "Estativo",
+      "ejemplo": "Eso significa algo"
+    },
+    {
+      "id": 83,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'llorar'",
+      "reverso": "Dinámico",
+      "ejemplo": "Llora desconsoladamente"
+    },
+    {
+      "id": 84,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'consistir'",
+      "reverso": "Estativo",
+      "ejemplo": "Consiste en..."
+    },
+    {
+      "id": 85,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Observamos llover'",
+      "reverso": "CORRECTA",
+      "ejemplo": "Evento meteorológico"
+    },
+    {
+      "id": 86,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? '*Observamos estar lluvioso'",
+      "reverso": "INCORRECTA",
+      "ejemplo": "Estado, no evento"
+    },
+    {
+      "id": 87,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Qué relación hay con la noción de 'evento' en lingüística?",
+      "reverso": "Los eventos tienen estructura temporal interna y son perceptibles; los estados son homogéneos y no delimitados.",
+      "ejemplo": "Semántica eventiva"
+    },
+    {
+      "id": 88,
+      "tipo": "concepto",
+      "categoria": "aspectual",
+      "dificultad": "difícil",
+      "frontal": "¿Cómo afecta la negación?",
+      "reverso": "La negación no cambia la aspectualidad: '*Vi no saber' sigue siendo agramatical aunque negado.",
+      "ejemplo": "La restricción es aspectual, no veritativa"
+    },
+    {
+      "id": 89,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "difícil",
+      "frontal": "Analiza: 'Noté que algo cambiaba' vs '*Noté cambiar algo'",
+      "reverso": "Ambas son correctas si 'cambiar' es dinámico. La segunda requiere percepción directa del cambio.",
+      "ejemplo": "Matiz aspectual"
+    },
+    {
+      "id": 90,
+      "tipo": "ejemplo",
+      "categoria": "contraste",
+      "dificultad": "difícil",
+      "frontal": "Compara: 'Sentí que me quería' vs '*Sentí quererme'",
+      "reverso": "Primera correcta (estado). Segunda agramatical (estativo en infinitivo).",
+      "ejemplo": "El amor como estado vs como acción"
+    },
+    {
+      "id": 91,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'amanecer'",
+      "reverso": "Dinámico",
+      "ejemplo": "Está amaneciendo"
+    },
+    {
+      "id": 92,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'anochecer'",
+      "reverso": "Dinámico",
+      "ejemplo": "Anochece temprano"
+    },
+    {
+      "id": 93,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'carecer'",
+      "reverso": "Estativo",
+      "ejemplo": "Carece de recursos"
+    },
+    {
+      "id": 94,
+      "tipo": "ejemplo",
+      "categoria": "identificacion",
+      "dificultad": "fácil",
+      "frontal": "Clasifica: 'abundar'",
+      "reverso": "Estativo",
+      "ejemplo": "Abundan los problemas"
+    },
+    {
+      "id": 95,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? 'Vimos atardecer'",
+      "reverso": "CORRECTA",
+      "ejemplo": "Evento perceptible"
+    },
+    {
+      "id": 96,
+      "tipo": "gramatical",
+      "categoria": "estructura",
+      "dificultad": "media",
+      "frontal": "¿Es correcta? '*Vimos ser tarde'",
+      "reverso": "INCORRECTA",
+      "ejemplo": "Estado temporal"
+    },
+    {
+      "id": 97,
+      "tipo": "concepto",
+      "categoria": "general",
+      "dificultad": "media",
+      "frontal": "Resume la regla principal",
+      "reverso": "Con verbos de percepción: predicados dinámicos → infinitivo o 'que'; predicados estativos → solo 'que'.",
+      "ejemplo": "Regla de oro"
+    },
+    {
+      "id": 98,
+      "tipo": "concepto",
+      "categoria": "general",
+      "dificultad": "media",
+      "frontal": "¿Cuándo usar infinitivo después de verbo de percepción?",
+      "reverso": "Solo cuando el predicado subordinado es dinámico y denota un evento perceptible directamente.",
+      "ejemplo": "Ver llover, oír cantar"
+    },
+    {
+      "id": 99,
+      "tipo": "concepto",
+      "categoria": "general",
+      "dificultad": "media",
+      "frontal": "¿Cuándo usar 'que' después de verbo de percepción?",
+      "reverso": "Siempre con predicados estativos, y también con dinámicos (alternativa al infinitivo).",
+      "ejemplo": "Ver que alguien corre / Ver que alguien está cansado"
+    },
+    {
+      "id": 100,
+      "tipo": "concepto",
+      "categoria": "general",
+      "dificultad": "difícil",
+      "frontal": "¿Por qué es importante esta distinción?",
+      "reverso": "Porque revela cómo la gramática codifica la distinción cognitiva entre eventos (perceptibles directamente) y estados (que requieren inferencia).",
+      "ejemplo": "Interfaz sintaxis-semántica-cognición"
+    }
+  ]
+}

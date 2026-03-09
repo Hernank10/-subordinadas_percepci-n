@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+
+{% block title %}Flashcards - Lingüística Educativa{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="text-center mb-4">
+        <i class="bi bi-card-list me-2"></i>
+        Flashcards: 100 Ejercicios Interactivos
+    </h2>
+    
+    <!-- Barra de progreso -->
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Tu progreso</h5>
+                    <div class="progress mb-2" style="height: 20px;">
+                        <div class="progress-bar bg-success" role="progressbar" 
+                             style="width: 0%" id="progress-bar"></div>
+                    </div>
+                    <p class="text-muted mb-0" id="progress-text">
+                        Has visto 0 de {{ total_flashcards }} flashcards
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Filtros -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="bi bi-funnel me-2"></i>Filtros
+                    </h5>
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label for="categoria" class="form-label">Categoría</label>
+                            <select class="form-select" id="categoria">
+                                <option value="todas">Todas las categorías</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="dificultad" class="form-label">Dificultad</label>
+                            <select class="form-select" id="dificultad">
+                                <option value="todas">Todas las dificultades</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="tipo" class="form-label">Tipo</label>
+                            <select class="form-select" id="tipo">
+                                <option value="todos">Todos los tipos</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <button class="btn btn-primary me-2" onclick="cargarFlashcardAleatoria()">
+                                <i class="bi bi-shuffle me-2"></i>Flashcard Aleatoria
+                            </button>
+                            <button class="btn btn-outline-secondary" onclick="resetearFiltros()">
+                                <i class="bi bi-arrow-counterclockwise me-2"></i>Resetear Filtros
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Área de la flashcard -->
+    <div class="row mb-4">
+        <div class="col-md-8 mx-auto">
+            <div class="card flashcard" id="flashcard" style="cursor: pointer; min-height: 300px;">
+                <div class="card-body text-center d-flex flex-column justify-content-center">
+                    <div id="flashcard-front">
+                        <h4 class="mb-3" id="pregunta">Haz clic en "Flashcard Aleatoria" para comenzar</h4>
+                        <p class="text-muted" id="tipo-flashcard"></p>
+                    </div>
+                    <div id="flashcard-back" style="display: none;">
+                        <h5 class="mb-3">Respuesta:</h5>
+                        <p id="respuesta" class="lead"></p>
+                        <div class="alert alert-info mt-3" id="ejemplo"></div>
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                    <div class="row">
+                        <div class="col-4 text-start">
+                            <span class="badge bg-primary" id="categoria-badge"></span>
+                        </div>
+                        <div class="col-4 text-center">
+                            <span class="badge" id="dificultad-badge"></span>
+                        </div>
+                        <div class="col-4 text-end">
+                            <span id="contador">0/100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Botones de navegación -->
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-outline-primary" onclick="cargarFlashcardAleatoria()">
+                    <i class="bi bi-arrow-left me-2"></i>Anterior
+                </button>
+                <button class="btn btn-primary" onclick="voltearFlashcard()">
+                    <i class="bi bi-arrow-repeat me-2"></i>Voltear
+                </button>
+                <button class="btn btn-outline-primary" onclick="cargarFlashcardAleatoria()">
+                    Siguiente <i class="bi bi-arrow-right ms-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Buscador -->
+    <div class="row mt-5">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="bi bi-search me-2"></i>Buscar flashcards
+                    </h5>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="busqueda" 
+                               placeholder="Escribe al menos 3 caracteres...">
+                        <button class="btn btn-outline-secondary" type="button" onclick="buscarFlashcards()">
+                            Buscar
+                        </button>
+                    </div>
+                    <div id="resultados-busqueda" class="list-group" style="display: none;">
+                        <!-- Resultados aparecerán aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let flashcardActual = null;
+let caraActual = 'front'; // 'front' o 'back'
+
+// Cargar filtros al iniciar
+document.addEventListener('DOMContentLoaded', function() {
+    cargarFiltros();
+    cargarEstadisticas();
+});
+
+function cargarFiltros() {
+    // Cargar categorías
+    fetch('/api/flashcards/categorias')
+        .then(response => response.json())
+        .then(categorias => {
+            const select = document.getElementById('categoria');
+            categorias.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+                select.appendChild(option);
+            });
+        });
+    
+    // Cargar dificultades
+    fetch('/api/flashcards/dificultades')
+        .then(response => response.json())
+        .then(dificultades => {
+            const select = document.getElementById('dificultad');
+            dificultades.forEach(dif => {
+                const option = document.createElement('option');
+                option.value = dif;
+                option.textContent = dif.charAt(0).toUpperCase() + dif.slice(1);
+                select.appendChild(option);
+            });
+        });
+    
+    // Cargar tipos
+    fetch('/api/flashcards/tipos')
+        .then(response => response.json())
+        .then(tipos => {
+            const select = document.getElementById('tipo');
+            tipos.forEach(tipo => {
+                const option = document.createElement('option');
+                option.value = tipo;
+                option.textContent = tipo.charAt(0).toUpperCase() + tipo.slice(1);
+                select.appendChild(option);
+            });
+        });
+}
+
+function cargarFlashcardAleatoria() {
+    const categoria = document.getElementById('categoria').value;
+    const dificultad = document.getElementById('dificultad').value;
+    const tipo = document.getElementById('tipo').value;
+    
+    let url = '/api/flashcards/random?';
+    if (categoria && categoria !== 'todas') url += `categoria=${categoria}&`;
+    if (dificultad && dificultad !== 'todas') url += `dificultad=${dificultad}&`;
+    if (tipo && tipo !== 'todos') url += `tipo=${tipo}`;
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+                return;
+            }
+            flashcardActual = data;
+            mostrarFlashcard(data);
+            caraActual = 'front';
+            cargarEstadisticas();
+        });
+}
+
+function mostrarFlashcard(flashcard) {
+    document.getElementById('pregunta').textContent = flashcard.frontal;
+    document.getElementById('respuesta').textContent = flashcard.reverso;
+    
+    if (flashcard.ejemplo) {
+        document.getElementById('ejemplo').innerHTML = 
+            `<strong>Ejemplo:</strong> "${flashcard.ejemplo}"`;
+    } else {
+        document.getElementById('ejemplo').innerHTML = '';
+    }
+    
+    document.getElementById('categoria-badge').textContent = flashcard.categoria;
+    document.getElementById('dificultad-badge').textContent = flashcard.dificultad;
+    
+    // Color según dificultad
+    const badge = document.getElementById('dificultad-badge');
+    badge.className = 'badge';
+    if (flashcard.dificultad === 'fácil') {
+        badge.classList.add('bg-success');
+    } else if (flashcard.dificultad === 'media') {
+        badge.classList.add('bg-warning', 'text-dark');
+    } else {
+        badge.classList.add('bg-danger');
+    }
+    
+    document.getElementById('tipo-flashcard').textContent = 
+        `Tipo: ${flashcard.tipo}`;
+    
+    document.getElementById('flashcard-front').style.display = 'block';
+    document.getElementById('flashcard-back').style.display = 'none';
+}
+
+function voltearFlashcard() {
+    if (!flashcardActual) {
+        alert('Primero carga una flashcard');
+        return;
+    }
+    
+    if (caraActual === 'front') {
+        document.getElementById('flashcard-front').style.display = 'none';
+        document.getElementById('flashcard-back').style.display = 'block';
+        caraActual = 'back';
+    } else {
+        document.getElementById('flashcard-front').style.display = 'block';
+        document.getElementById('flashcard-back').style.display = 'none';
+        caraActual = 'front';
+    }
+}
+
+function cargarEstadisticas() {
+    fetch('/api/flashcards/estadisticas')
+        .then(response => response.json())
+        .then(data => {
+            const porcentaje = data.porcentaje || 0;
+            document.getElementById('progress-bar').style.width = porcentaje + '%';
+            document.getElementById('progress-text').innerHTML = 
+                `Has visto ${data.vistas} de ${data.total_flashcards} flashcards (${porcentaje}%)`;
+            document.getElementById('contador').textContent = 
+                `${data.vistas}/${data.total_flashcards}`;
+        });
+}
+
+function resetearFiltros() {
+    document.getElementById('categoria').value = 'todas';
+    document.getElementById('dificultad').value = 'todas';
+    document.getElementById('tipo').value = 'todos';
+}
+
+function buscarFlashcards() {
+    const termino = document.getElementById('busqueda').value;
+    if (termino.length < 3) {
+        alert('Escribe al menos 3 caracteres');
+        return;
+    }
+    
+    fetch(`/api/flashcards/buscar?q=${encodeURIComponent(termino)}`)
+        .then(response => response.json())
+        .then(resultados => {
+            const divResultados = document.getElementById('resultados-busqueda');
+            divResultados.style.display = 'block';
+            divResultados.innerHTML = '';
+            
+            if (resultados.length === 0) {
+                divResultados.innerHTML = '<div class="list-group-item">No se encontraron resultados</div>';
+                return;
+            }
+            
+            resultados.forEach(f => {
+                const item = document.createElement('a');
+                item.href = '#';
+                item.className = 'list-group-item list-group-item-action';
+                item.onclick = (e) => {
+                    e.preventDefault();
+                    flashcardActual = f;
+                    mostrarFlashcard(f);
+                    caraActual = 'front';
+                    divResultados.style.display = 'none';
+                    document.getElementById('busqueda').value = '';
+                };
+                item.innerHTML = `
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">${f.frontal.substring(0, 50)}...</h6>
+                        <small class="badge bg-info">${f.categoria}</small>
+                    </div>
+                    <small class="text-muted">${f.tipo} · ${f.dificultad}</small>
+                `;
+                divResultados.appendChild(item);
+            });
+        });
+}
+
+// Evento para voltear al hacer clic en la tarjeta
+document.getElementById('flashcard').addEventListener('click', voltearFlashcard);
+</script>
+
+<style>
+.flashcard {
+    transition: transform 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.flashcard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+#flashcard-back {
+    animation: fadeIn 0.5s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
+{% endblock %}

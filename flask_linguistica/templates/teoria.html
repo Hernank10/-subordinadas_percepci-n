@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Teoría - Lingüística Educativa{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Fundamentos Teóricos</h2>
+    
+    <div class="row">
+        {% for seccion in teoria_data %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-header text-center">
+                    <i class="bi bi-{{ seccion.icono }} feature-icon"></i>
+                    <h5>{{ seccion.titulo }}</h5>
+                </div>
+                <div class="card-body">
+                    {% if seccion.titulo == "Predicados Estativos vs. Dinámicos" %}
+                        <h6>Predicados Estativos</h6>
+                        <p>{{ seccion.contenido.estativos.descripcion }}</p>
+                        <ul>
+                            {% for ejemplo in seccion.contenido.estativos.ejemplos %}
+                            <li><em>{{ ejemplo }}</em></li>
+                            {% endfor %}
+                        </ul>
+                        
+                        <h6 class="mt-3">Predicados Dinámicos</h6>
+                        <p>{{ seccion.contenido.dinamicos.descripcion }}</p>
+                        <ul>
+                            {% for ejemplo in seccion.contenido.dinamicos.ejemplos %}
+                            <li><em>{{ ejemplo }}</em></li>
+                            {% endfor %}
+                        </ul>
+                    
+                    {% elif seccion.titulo == "Verbos de Percepción" %}
+                        {% for estructura in seccion.contenido.estructuras %}
+                            <h6>Estructura con {{ estructura.tipo }}</h6>
+                            <p>{{ estructura.descripcion }}</p>
+                            {% if estructura.ejemplo_correcto %}
+                            <p class="example-correct"><strong>Correcto:</strong> "{{ estructura.ejemplo_correcto }}"</p>
+                            {% endif %}
+                            {% if estructura.ejemplo_incorrecto %}
+                            <p class="example-incorrect"><strong>Incorrecto:</strong> "{{ estructura.ejemplo_incorrecto }}"</p>
+                            {% endif %}
+                        {% endfor %}
+                    
+                    {% elif seccion.titulo == "Explicación Aspectual" %}
+                        <h6>El infinitivo requiere:</h6>
+                        <ul>
+                            {% for req in seccion.contenido.requisitos_infinitivo %}
+                            <li>{{ req }}</li>
+                            {% endfor %}
+                        </ul>
+                        
+                        <h6 class="mt-3">Los estativos fallan porque:</h6>
+                        <ul>
+                            {% for prob in seccion.contenido.problemas_estativos %}
+                            <li>{{ prob }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
